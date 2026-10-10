@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AyuCare | स्वास्थ्य साथी</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand" onclick="switchTab('dashboard')">
+        <div class="brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div class="brand-text">
+          <h1>AyuCare</h1>
+          <span class="subtext" data-i18n="tagline">Digital Health Portal • स्वास्थ्य साथी</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" onclick="switchTab('dashboard')" data-i18n="nav_dashboard"><i class="fa-solid fa-chart-pie"></i> Overview</button>
+        <button class="nav-btn" onclick="switchTab('symptom-checker')" data-i18n="nav_symptoms"><i class="fa-solid fa-stethoscope"></i> Symptom AI</button>
+        <button class="nav-btn" onclick="switchTab('emergency-care')" data-i18n="nav_emergency"><i class="fa-solid fa-truck-medical"></i> Emergency SOS</button>
+        <button class="nav-btn" onclick="switchTab('consultations')" data-i18n="nav_consult"><i class="fa-solid fa-phone"></i> Consult Team</button>
+        <button class="nav-btn" onclick="switchTab('medicine-catalog')" data-i18n="nav_medicines"><i class="fa-solid fa-pills"></i> Medicines (500+)</button>
+      </nav>
+
+      <div class="header-controls">
+        <button id="langToggleBtn" class="pill-btn lang-btn" onclick="toggleLanguage()">
+          <i class="fa-solid fa-globe"></i> <span id="currentLangLabel">हिन्दी</span>
+        </button>
+        <div id="authStatusArea" class="user-auth-indicator"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Shell -->
+  <main class="main-shell">
+
+    <!-- 1. DASHBOARD TAB -->
+    <section id="dashboard" class="tab-pane active">
+      <div class="hero-card">
+        <div class="hero-content">
+          <span class="badge" data-i18n="hero_badge"><i class="fa-solid fa-microphone-lines"></i> Voice-Activated Bilingual Healthcare</span>
+          <h2 data-i18n="hero_title">Safe, Accessible Healthcare In Your Language</h2>
+          <p data-i18n="hero_desc">Speak or type in Hindi/English. Access triaged assessments, CPR metronome, 500+ medicines, and doctor appointments.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="switchTab('symptom-checker')" data-i18n="btn_check_symptoms"><i class="fa-solid fa-magnifying-glass-chart"></i> Check Symptoms</button>
+            <button class="btn btn-emergency" onclick="switchTab('emergency-care')" data-i18n="btn_open_emergency"><i class="fa-solid fa-phone-volume"></i> Emergency First Aid</button>
+            <button class="btn btn-voice" onclick="toggleVoiceModal()"><i class="fa-solid fa-microphone"></i> <span data-i18n="btn_voice_start">Voice Assistant</span></button>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box"><span class="number">500+</span><span class="label" data-i18n="stat_medicines">Cataloged Medicines</span></div>
+          <div class="stat-box"><span class="number">100%</span><span class="label" data-i18n="stat_bilingual">Bilingual Ready</span></div>
+          <div class="stat-box"><span class="number">105 BPM</span><span class="label" data-i18n="stat_cpr">AHA Audio Metronome</span></div>
+        </div>
+      </div>
+
+      <div class="grid-3 mt-4">
+        <div class="feature-card" onclick="switchTab('symptom-checker')">
+          <div class="icon-bubble bg-teal"><i class="fa-solid fa-brain"></i></div>
+          <h3 data-i18n="card_triage_title">Smart AI Symptom Triage</h3>
+          <p data-i18n="card_triage_desc">Analyze discomfort signs, rash images, and pain intensity with immediate clinical triage.</p>
+          <span class="link-arrow">Start evaluation &rarr;</span>
+        </div>
+        <div class="feature-card" onclick="switchTab('emergency-care')">
+          <div class="icon-bubble bg-red"><i class="fa-solid fa-heart-crack"></i></div>
+          <h3 data-i18n="card_sos_title">AHA First Aid & CPR Engine</h3>
+          <p data-i18n="card_sos_desc">Sound-synthesized CPR metronome, Stroke F.A.S.T. checklist, and live GPS dispatch.</p>
+          <span class="link-arrow">Open emergency guide &rarr;</span>
+        </div>
+        <div class="feature-card" onclick="switchTab('consultations')">
+          <div class="icon-bubble bg-purple"><i class="fa-solid fa-user-doctor"></i></div>
+          <h3 data-i18n="card_tele_title">Telemedicine Booking</h3>
+          <p data-i18n="card_tele_desc">Schedule appointments with verified cardiologists, pediatricians, and general doctors.</p>
+          <span class="link-arrow">Book a slot &rarr;</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SYMPTOM CHECKER TAB -->
+    <section id="symptom-checker" class="tab-pane">
+      <div class="section-title">
+        <h2 data-i18n="symptom_header">Symptom Checker & Visual Analysis</h2>
+        <p class="text-muted" data-i18n="symptom_sub">Select clinical markers or upload an image of a rash/wound for conservative triage evaluation.</p>
+      </div>
+
+      <div class="disclaimer-banner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <div data-i18n="diagnostic_disclaimer">
+          <strong>Mandatory Diagnostic Disclaimer:</strong> AyuCare provides health information and triage estimation only. It is NOT a clinical diagnosis. Always seek prompt in-person consultation with a qualified medical professional for health conditions.
+        </div>
+      </div>
+
+      <div class="grid-2 mt-3">
+        <div class="panel">
+          <h3 class="panel-header" data-i18n="select_symptoms_header"><i class="fa-solid fa-list-check"></i> 1. Select Key Symptoms</h3>
+          <div class="symptom-tag-cloud" id="symptomTagsContainer"></div>
+
+          <div class="form-group mt-3">
+            <div class="flex-between">
+              <label data-i18n="custom_symptoms_label">Describe your symptoms in your own words:</label>
+              <button class="mic-inline-btn" onclick="dictateSymptoms()" title="Speak symptoms"><i class="fa-solid fa-microphone"></i> Dictate</button>
+            </div>
+            <textarea id="freeTextSymptoms" rows="3" placeholder="e.g. Sharp pain in lower right abdomen, mild fever for 2 days..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="pain_scale_label">Pain Intensity (1 - 10): <span id="painVal" class="bold">5</span></label>
+            <input type="range" id="painSlider" min="1" max="10" value="5" oninput="document.getElementById('painVal').textContent = this.value">
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="image_upload_label"><i class="fa-solid fa-camera"></i> Optical Scan (Optional Skin / Rash Photo):</label>
+            <input type="file" id="symptomImgInput" accept="image/*" onchange="previewSymptomImage(event)">
+            <div id="imagePreviewBox" class="img-preview-box mt-2 hidden">
+              <img id="previewImg" src="" alt="Upload Preview">
+              <span class="reticle-box"></span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100" onclick="runSymptomAssessment()" data-i18n="btn_evaluate">
+            <i class="fa-solid fa-microscope"></i> Run Health Evaluation
+          </button>
+        </div>
+
+        <div class="panel" id="symptomResultsPanel">
+          <h3 class="panel-header" data-i18n="triage_header"><i class="fa-solid fa-square-poll-vertical"></i> Triage Assessment</h3>
+          <div id="symptomPlaceholder" class="empty-state">
+            <i class="fa-solid fa-clipboard-question"></i>
+            <p data-i18n="triage_empty">Select symptoms or type your concerns on the left and click "Run Health Evaluation".</p>
+          </div>
+          <div id="assessmentOutput" class="assessment-output hidden"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. EMERGENCY CARE TAB -->
+    <section id="emergency-care" class="tab-pane">
+      <div class="emergency-bar">
+        <div>
+          <h2><i class="fa-solid fa-circle-exclamation text-danger"></i> <span data-i18n="emergency_header">Emergency First Aid & SOS Center</span></h2>
+          <p data-i18n="emergency_sub">In critical medical scenarios, immediate intervention saves lives. Call standard authorities without delay.</p>
+        </div>
+        <div class="quick-dials">
+          <a href="tel:112" class="dial-btn"><i class="fa-solid fa-phone"></i> 112 (National SOS)</a>
+          <a href="tel:108" class="dial-btn bg-danger"><i class="fa-solid fa-ambulance"></i> 108 (Ambulance)</a>
+        </div>
+      </div>
+
+      <div class="grid-2 mt-4">
+        <div class="panel emergency-box">
+          <div class="panel-header flex-between">
+            <span><i class="fa-solid fa-heart-pulse text-danger"></i> <strong data-i18n="cpr_title">AHA 105 BPM CPR Metronome</strong></span>
+            <span class="badge badge-danger">100-120 BPM Target</span>
+          </div>
+          <p data-i18n="cpr_desc">For an unresponsive individual not breathing normally: push hard and fast in the center of the chest to the beat of this metronome.</p>
+          
+          <div class="metronome-visual-wrap">
+            <div id="metronomePulse" class="metronome-pulse"></div>
+            <div class="metronome-counter"><span id="cprCounter">0</span> <small>COMPRESSIONS</small></div>
+          </div>
+
+          <div class="flex-row-center gap-2 mt-3">
+            <button id="cprToggleBtn" class="btn btn-emergency" onclick="toggleCPRMetronome()"><i class="fa-solid fa-play"></i> Start CPR Metronome</button>
+            <button class="btn btn-secondary" onclick="resetCPR()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-header" data-i18n="sos_location_title"><i class="fa-solid fa-location-crosshairs"></i> Live GPS Location Broadcast</h3>
+          <p data-i18n="sos_location_desc">Acquire precise coordinates from your device's browser GPS and broadcast distress alerts to selected contacts.</p>
+
+          <div class="gps-coords-card mt-2">
+            <div><strong>Latitude:</strong> <span id="gpsLat">Pending retrieval</span></div>
+            <div><strong>Longitude:</strong> <span id="gpsLng">Pending retrieval</span></div>
+            <div><strong>Status:</strong> <span id="gpsStatus" class="badge">Standby</span></div>
+          </div>
+
+          <div class="mt-3 flex-row gap-2">
+            <button class="btn btn-primary" onclick="acquireDeviceLocation()"><i class="fa-solid fa-location-dot"></i> Get Accurate GPS</button>
+            <button class="btn btn-success" onclick="broadcastSOSWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Broadcast to WhatsApp</button>
+          </div>
+
+          <h4 class="mt-4" data-i18n="designated_contacts_title">Designated Emergency Contacts:</h4>
+          <ul id="emergencyContactList" class="contact-list mt-2"></ul>
+        </div>
+      </div>
+
+      <div class="grid-3 mt-4">
+        <div class="aid-card">
+          <h4><i class="fa-solid fa-person-falling"></i> Stroke (F.A.S.T.)</h4>
+          <ul>
+            <li><strong>Face:</strong> Ask person to smile. Does one side droop?</li>
+            <li><strong>Arms:</strong> Raise both arms. Does one drift downward?</li>
+            <li><strong>Speech:</strong> Slurred or strange phrasing?</li>
+            <li><strong>Time:</strong> Call 108 / 112 instantly if any sign matches.</li>
+          </ul>
+        </div>
+        <div class="aid-card">
+          <h4><i class="fa-solid fa-fire"></i> Severe Burns</h4>
+          <ul>
+            <li>Cool with cool running tap water for 15-20 minutes.</li>
+            <li>Do <strong>NOT</strong> apply ice, toothpaste, or turmeric.</li>
+            <li>Cover loosely with a sterile, non-adherent dressing.</li>
+            <li>Seek immediate burn unit care for blisters on face/hands.</li>
+          </ul>
+        </div>
+        <div class="aid-card">
+          <h4><i class="fa-solid fa-lungs"></i> Choking (Heimlich)</h4>
+          <ul>
+            <li>Stand behind person, wrap arms around their waist.</li>
+            <li>Make a fist above their navel; grasp with other hand.</li>
+            <li>Deliver rapid upward and inward abdominal thrusts.</li>
+            <li>If patient turns unresponsive, begin CPR immediately.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CONSULTATIONS TAB -->
+    <section id="consultations" class="tab-pane">
+      <div class="section-title">
+        <h2 data-i18n="telehealth_header">Contact the AyuCare Team</h2>
+        <p class="text-muted" data-i18n="telehealth_sub">Call a team member using your phone app, or open WhatsApp to contact them.</p>
+      </div>
+
+      <div class="grid-2 mt-3">
+        <div class="panel">
+          <h3 class="panel-header" data-i18n="available_doctors_header"><i class="fa-solid fa-users"></i> AyuCare Team Contacts</h3>
+          <div id="doctorsList" class="doctors-list-wrap mt-2"></div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-header" data-i18n="schedule_slot_header"><i class="fa-solid fa-calendar-check"></i> Schedule a Team Follow-up</h3>
+          <form id="appointmentForm" onsubmit="handleBookAppointment(event)" class="mt-2">
+            <div class="form-group">
+              <label data-i18n="form_doctor_select">Select Practitioner:</label>
+              <select id="apptDoctorSelect" required>
+<option value="">Select a team member</option>
+              </select>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label data-i18n="form_date">Date:</label>
+                <input type="date" id="apptDate" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="form_time">Time Slot:</label>
+                <select id="apptTime" required>
+                  <option value="10:00 AM">10:00 AM - 10:30 AM</option>
+                  <option value="11:30 AM">11:30 AM - 12:00 PM</option>
+                  <option value="02:30 PM">02:30 PM - 03:00 PM</option>
+                  <option value="04:00 PM">04:00 PM - 04:30 PM</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="form_mode">Consultation Mode:</label>
+              <select id="apptMode">
+                <option value="Phone Call">Phone Call</option>
+                <option value="WhatsApp">WhatsApp</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label data-i18n="form_chief_complaint">Chief Medical Concern:</label>
+              <input type="text" id="apptNotes" placeholder="e.g. Persistent headache and sinus pressure" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" data-i18n="btn_confirm_booking"><i class="fa-solid fa-calendar-plus"></i> Confirm Appointment</button>
+          </form>
+
+          <h4 class="mt-4" data-i18n="your_scheduled_appts">Your Booked Consultations:</h4>
+          <div id="userAppointmentsList" class="user-appts-wrap mt-2"></div>
+        </div>
+      </div>
+
+      <!-- Tele-Chamber Video Simulator -->
+      <div id="videoRoomModal" class="video-modal hidden">
+        <div class="video-window">
+          <div class="video-header">
+            <div><i class="fa-solid fa-lock text-success"></i> <strong>AyuCare Secure Tele-Chamber</strong></div>
+            <button class="close-x" onclick="closeTeleRoom()">&times;</button>
+          </div>
+          <div class="video-screens">
+            <div class="doctor-feed">
+              <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&auto=format&fit=crop&q=80" alt="Doctor stream">
+              <span class="video-tag" id="activeDocName">Dr. Aarti Verma</span>
+            </div>
+            <div class="self-feed">
+              <div class="self-avatar"><i class="fa-solid fa-user"></i></div>
+              <span class="video-tag">You (Patient)</span>
+            </div>
+          </div>
+          <div class="video-controls">
+            <button class="icon-round active"><i class="fa-solid fa-microphone"></i></button>
+            <button class="icon-round active"><i class="fa-solid fa-video"></i></button>
+            <button class="icon-round bg-danger" onclick="closeTeleRoom()"><i class="fa-solid fa-phone-slash"></i></button>
+            <button class="btn btn-secondary" onclick="generateMockPrescription()"><i class="fa-solid fa-file-prescription"></i> Export Rx</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 500+ MEDICINE DIRECTORY TAB -->
+    <section id="medicine-catalog" class="tab-pane">
+      <div class="section-title">
+        <h2 data-i18n="med_directory_header">500+ Comprehensive Medicine & Therapeutic Reference</h2>
+        <p class="text-muted" data-i18n="med_directory_sub">Bilingual pharmaceutical knowledge base covering indications, adult dosages, contraindications, and Hindi names.</p>
+      </div>
+
+      <div class="search-filter-bar">
+        <div class="search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="medSearchInput" placeholder="Search by generic, brand name, or therapeutic category (e.g. Paracetamol, Ciprofloxacin, Metformin)..." oninput="filterMedicines()">
+        </div>
+        <select id="medCategorySelect" onchange="filterMedicines()">
+          <option value="ALL">All Categories (10 Classes)</option>
+          <option value="Analgesics & Antipyretics">Analgesics & Pain Relievers</option>
+          <option value="Antibiotics & Antimicrobials">Antibiotics & Antimicrobials</option>
+          <option value="Cardiovascular & Antihypertensives">Cardiovascular & Blood Pressure</option>
+          <option value="Antidiabetic Agents">Antidiabetic & Glucose Control</option>
+          <option value="Gastrointestinal & Antacids">Gastrointestinal & Antacids</option>
+          <option value="Respiratory & Anti-Asthmatics">Respiratory & Bronchodilators</option>
+          <option value="Antihistamines & Allergy">Antihistamines & Allergy</option>
+          <option value="Neurology & Neuropsychiatry">Neurology & Neuropsychiatry</option>
+          <option value="Dermatology & Topicals">Dermatology & Skin Care</option>
+          <option value="Vitamins, Minerals & Supplements">Vitamins & Micronutrients</option>
+        </select>
+      </div>
+
+      <div class="catalog-summary-stats flex-between mt-2">
+        <span>Showing <strong id="visibleMedCount">0</strong> of <strong id="totalMedCount">500+</strong> catalog items</span>
+        <div class="pagination-controls">
+          <button class="btn-sm" id="prevPageBtn" onclick="prevMedPage()">&laquo; Prev</button>
+          <span id="pageIndicator" class="bold">Page 1</span>
+          <button class="btn-sm" id="nextPageBtn" onclick="nextMedPage()">Next &raquo;</button>
+        </div>
+      </div>
+
+      <div id="medicineGrid" class="medicine-grid mt-3"></div>
+    </section>
+  </main>
+
+  <!-- FLOATING VOICE ASSISTANT BUTTON & MODAL -->
+  <button id="floatingVoiceTrigger" class="floating-voice-trigger" onclick="toggleVoiceModal()" title="Open AyuCare Voice Assistant">
+    <i class="fa-solid fa-microphone"></i>
+    <span class="voice-badge-text">आवाज़ साथी</span>
+  </button>
+
+  <div id="voiceAssistantModal" class="voice-modal-backdrop hidden">
+    <div class="voice-card">
+      <div class="voice-card-header flex-between">
+        <div class="flex-row gap-2">
+          <div class="voice-icon-box"><i class="fa-solid fa-robot"></i></div>
+          <div>
+            <h3 data-i18n="voice_title">AyuCare Voice Assistant</h3>
+            <span class="text-muted" style="font-size:0.75rem;" data-i18n="voice_subtitle">Bilingual Health Companion (Hindi & English)</span>
+          </div>
+        </div>
+        <button class="close-x" onclick="toggleVoiceModal()">&times;</button>
+      </div>
+
+      <div class="voice-card-body">
+        <div id="voiceStatusMsg" class="voice-status">Tap the microphone to speak... / बोलने के लिए माइक दबाएं...</div>
+        
+        <div class="voice-wave-container" id="voiceWaveContainer">
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+          <div class="wave-bar"></div>
+        </div>
+
+        <div class="transcript-box">
+          <div class="transcript-label" data-i18n="voice_you_said">You Said:</div>
+          <div id="userSpeechTranscript" class="transcript-text">"..."</div>
+        </div>
+
+        <div class="transcript-box reply-box mt-2">
+          <div class="transcript-label" data-i18n="voice_bot_reply">AyuCare Response:</div>
+          <div id="botVoiceReply" class="transcript-text">"Hello! Ask me about medicines, tell me your symptoms, or say 'Emergency' for SOS."</div>
+        </div>
+      </div>
+
+      <div class="voice-card-footer flex-between">
+        <div class="voice-suggested-commands">
+          <small><strong>Try saying:</strong> "Find Paracetamol", "Start CPR", "मुझे बुखार है", "Emergency"</small>
+        </div>
+        <button id="micActionBtn" class="btn btn-voice-circle" onclick="toggleVoiceListening()">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI PROJECT ASSISTANT: separate from the existing voice assistant -->
+  <button id="aiChatTrigger" class="ai-chat-trigger" type="button" onclick="toggleAIChat()" aria-label="Open AyuCare AI assistant">
+    <i class="fa-solid fa-comments"></i><span>Ask AyuCare AI</span>
+  </button>
+  <section id="aiChatPanel" class="ai-chat-panel hidden" aria-label="AyuCare AI chat">
+    <header class="ai-chat-header">
+      <div class="ai-chat-avatar"><i class="fa-solid fa-robot"></i></div>
+      <div><strong>AyuCare AI Assistant</strong><small>Hindi + English · Project help</small></div>
+      <button type="button" class="ai-chat-close" onclick="toggleAIChat()" aria-label="Close chat">&times;</button>
+    </header>
+    <div id="aiChatMessages" class="ai-chat-messages" aria-live="polite">
+      <div class="ai-chat-message assistant">Hi! 👋 I’m your AyuCare assistant. Ask me naturally about this project, its features, or how to use it. आप हिंदी में भी पूछ सकते हैं।</div>
+    </div>
+    <div class="ai-chat-suggestions">
+      <button type="button" onclick="askAISuggestion('What can AyuCare do?')">Project features</button>
+      <button type="button" onclick="askAISuggestion('How do I book a doctor appointment?')">Book a doctor</button>
+      <button type="button" onclick="askAISuggestion('मेदिमित्र कैसे काम करता है?')">हिंदी में समझाएं</button>
+    </div>
+    <form id="aiChatForm" class="ai-chat-form" onsubmit="sendAIChatMessage(event)">
+      <textarea id="aiChatInput" rows="1" maxlength="2000" placeholder="Ask anything about AyuCare… / यहाँ पूछें…" aria-label="Message to AI assistant" required></textarea>
+      <button id="aiChatSend" type="submit" aria-label="Send message"><i class="fa-solid fa-paper-plane"></i></button>
+    </form>
+    <div class="ai-chat-note">For project guidance and general information. Not a substitute for a doctor.</div>
+  </section>
+
+  <!-- AUTHENTICATION MODAL (LOGIN / SIGN UP) -->
+  <div id="authModal" class="modal-backdrop hidden">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h3 id="authModalTitle" data-i18n="auth_login_title">Sign In to AyuCare</h3>
+        <button class="close-x" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="auth-form">
+        <div class="form-group">
+          <label data-i18n="auth_email">Email Address:</label>
+          <input type="email" id="loginEmail" required placeholder="patient@example.com">
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth_password">Password:</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn btn-primary w-100 mt-2" data-i18n="btn_login">Sign In</button>
+        <p class="auth-toggle-note">
+          <span data-i18n="auth_no_account">Don't have an account?</span> 
+          <a href="javascript:void(0)" onclick="toggleAuthForm('signup')" data-i18n="auth_create_account_link">Make New Account</a>
+        </p>
+      </form>
+
+      <form id="signupForm" onsubmit="handleSignupSubmit(event)" class="auth-form hidden">
+        <div class="form-group">
+          <label data-i18n="auth_full_name">Full Name:</label>
+          <input type="text" id="regName" required placeholder="e.g. Ramesh Kumar">
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth_email">Email Address:</label>
+          <input type="email" id="regEmail" required placeholder="ramesh@example.com">
+        </div>
+        <div class="form-group">
+          <label data-i18n="auth_password">Create Password:</label>
+          <input type="password" id="regPassword" required placeholder="Minimum 6 characters">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label data-i18n="auth_blood_group">Blood Group:</label>
+            <select id="regBlood">
+              <option value="O+">O Positive (O+)</option>
+              <option value="O-">O Negative (O-)</option>
+              <option value="A+">A Positive (A+)</option>
+              <option value="A-">A Negative (A-)</option>
+              <option value="B+">B Positive (B+)</option>
+              <option value="B-">B Negative (B-)</option>
+              <option value="AB+">AB Positive (AB+)</option>
+              <option value="AB-">AB Negative (AB-)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="auth_allergies">Known Allergies:</label>
+            <input type="text" id="regAllergies" placeholder="Penicillin, Sulfa, None">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success w-100 mt-2" data-i18n="btn_register">Create New Account</button>
+        <p class="auth-toggle-note">
+          <span data-i18n="auth_has_account">Already registered?</span> 
+          <a href="javascript:void(0)" onclick="toggleAuthForm('login')" data-i18n="auth_sign_in_link">Sign In here</a>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div>
+        <strong>AyuCare (स्वास्थ्य साथी)</strong> &copy; 2026. Voice-Enabled Health Architecture.
+      </div>
+      <div class="footer-links">
+        <span>Helpline: <strong>112 / 108</strong></span>
+        <span>|</span>
+        <span>Speech-to-Text & Text-to-Speech Ready</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
